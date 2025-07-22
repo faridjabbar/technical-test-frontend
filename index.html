@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Menu Makanan Tradisional</title>
+    <link rel="stylesheet" href="index.css" />
+    <script src="index.js" defer></script>
+</head>
+
+<body style="display: none;">
+    <div class="main-content">
+        <div class="topbar">
+            <h1 id="page-title">Makanan Tradisional</h1>
+            <div class="topbar-buttons">
+                <button id="create-button" class="create-btn" style="display: none;">➕ Create</button>
+                <button id="refresh-button" class="refresh-btn">🔄 Refresh</button>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+        </div>
+        <div class="content-box" id="content">
+            <table id="menu-table" border="1">
+                <thead>
+                    <tr>
+                        <th>Nama</th>
+                        <th>Asal Daerah</th>
+                        <th>Jenis</th>
+                        <th>Resep</th>
+                        <th>Deskripsi</th>
+                        <th id="aksi-header">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>
