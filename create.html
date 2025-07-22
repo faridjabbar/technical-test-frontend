@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Tambah Makanan Tradisional</title>
+    <link rel="stylesheet" href="create.css" />
+</head>
+
+<body style="display: none;">
+    <div class="container">
+        <h1>Tambah Makanan Tradisional</h1>
+        <form id="create-form">
+            <div class="form-group">
+                <label for="nama">Nama Makanan</label>
+                <input type="text" id="nama" required />
+            </div>
+            <div class="form-group">
+                <label for="asal">Asal Daerah</label>
+                <input type="text" id="asal" required />
+            </div>
+            <div class="form-group">
+                <label for="deskripsi">Deskripsi</label>
+                <textarea id="deskripsi" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="resep">Resep</label>
+                <textarea id="resep" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="type">Tipe</label>
+                <select id="type" required>
+                    <option value="">Pilih Jenis</option>
+                    <option value="Makanan Utama">Makanan Utama</option>
+                    <option value="Sup">Sup</option>
+                    <option value="Lauk">Lauk</option>
+                    <option value="Salad Tradisional">Salad Tradisional</option>
+                </select>
+            </div>
+            <div class="button-group">
+                <button type="submit">Simpan</button>
+                <button type="button" onclick="window.history.back()">Batal</button>
+            </div>
+
+        </form>
+    </div>
+
+    <script src="create.js"></script>
+</body>
+
+</html>
