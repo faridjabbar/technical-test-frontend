@@ -38,16 +38,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 window.location.href = "create.html";
             });
         }
-    }
-
-    if (role.toLowerCase() !== "administrator") {
+    } else {
         const aksiHeader = document.getElementById("aksi-header");
         if (aksiHeader) aksiHeader.remove();
 
         document.querySelectorAll(".aksi-cell").forEach(td => td.remove());
     }
-
-    loadMenu(token, role);
 
     const refreshButton = document.getElementById("refresh-button");
     if (refreshButton) {
@@ -67,11 +63,31 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         refreshButton.addEventListener("click", () => {
-            loadMenu(token, role);
+            const searchQuery = document.getElementById("search-input").value.trim();
+            loadMenu(token, role, searchQuery);
         });
     }
-});
 
+    const searchButton = document.getElementById("search-button");
+    const searchInput = document.getElementById("search-input");
+
+    if (searchButton && searchInput) {
+        searchButton.addEventListener("click", () => {
+            const searchQuery = searchInput.value.trim();
+            loadMenu(token, role, searchQuery);
+        });
+
+        searchInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") {
+                const searchQuery = searchInput.value.trim();
+                loadMenu(token, role, searchQuery);
+            }
+        });
+    }
+
+    // Load menu awal tanpa filter
+    loadMenu(token, role);
+});
 
 function logout() {
     localStorage.removeItem("token");
@@ -79,25 +95,28 @@ function logout() {
     window.location.href = "login.html";
 }
 
-function loadMenu(token, role) {
-    fetch("http://localhost:8080/traditional-food", {
+function loadMenu(token, role, searchKeyword = "") {
+    let url = "http://localhost:8080/traditional-food";
+    if (searchKeyword) {
+        url += `?search=${encodeURIComponent(searchKeyword)}`;
+    }
+
+    fetch(url, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
     })
         .then((response) => {
-            if (!response.ok) {
-                throw new Error("Token tidak valid atau server error.");
-            }
+            if (!response.ok) throw new Error("Token tidak valid atau server error.");
             return response.json();
         })
         .then((data) => {
             const tbody = document.querySelector("#menu-table tbody");
             tbody.innerHTML = "";
-            localStorage.setItem("allData", JSON.stringify(data.data));
+            localStorage.setItem("allData", JSON.stringify(data.data || []));
 
             if (data.success && Array.isArray(data.data)) {
-                data.data.forEach((item, index) => {
+                data.data.forEach((item) => {
                     const tr = document.createElement("tr");
 
                     const aksiTd = role.toLowerCase() === "administrator"
@@ -107,7 +126,6 @@ function loadMenu(token, role) {
                         </td>`
                         : "";
 
-
                     tr.innerHTML = `
                         <td>${item.name}</td>
                         <td>${item.regional_origin}</td>
@@ -116,11 +134,10 @@ function loadMenu(token, role) {
                         <td>${item.description}</td>
                         ${aksiTd}
                     `;
-
                     tbody.appendChild(tr);
                 });
             } else {
-                alert("Data kosong atau format tidak sesuai.");
+                alert("Data tidak ditemukan.");
             }
         })
         .catch((error) => {
