@@ -58,6 +58,11 @@ function handleRegister() {
   const role = document.getElementById('register-role').value;
   const password = document.getElementById('register-password').value;
 
+  if (password.length < 8) {
+    alert("Password harus minimal 8 karakter.");
+    return;
+  }
+
   const payload = { name, email, role, password };
 
   fetch("http://localhost:8080/users", {
